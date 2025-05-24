@@ -7,19 +7,24 @@ import Sign_Up from './Components/Sign_Up/Sign_Up';
 import InstantConsultation from './Components/InstantConsultationBooking/InstantConsultation';
 import BookingConsultation from './Components/BookingConsultation';
 
+// Import Notification component
+import Notification from './Components/Notification/Notification';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
+        {/* Wrap the whole app inside Notification */}
+        <Notification>
+          <Navbar />
+          <Routes>
             <Route path="/" element={<Landing_page />} />
             <Route path="/login" element={<Login />} />
             <Route path="/booking-consultation" element={<BookingConsultation />} />
             <Route path="/signup" element={<Sign_Up />} />
             <Route path="/instant-consultation" element={<InstantConsultation />} />
-        </Routes>
+          </Routes>
+        </Notification>
       </BrowserRouter>
     </>
   );

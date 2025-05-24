@@ -1,0 +1,46 @@
+.notification-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 320px;
+  z-index: 1000;
+}
+
+.notification-card {
+  background-color: #f0f9ff;
+  border: 1px solid #3a99d8;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 10px rgba(58, 153, 216, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-header h3 {
+  margin: 0;
+  color: #0366d6;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #0366d6;
+}
+
+.close-btn:hover {
+  color: #023e7d;
+}
+
+.notification-card p {
+  margin: 6px 0;
+  color: #333;
+  font-size: 14px;
+}
