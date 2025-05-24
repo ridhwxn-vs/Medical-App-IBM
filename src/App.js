@@ -14,7 +14,7 @@ function App() {
             <Route path="/" element={<Landing_page />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Sign_Up />} />
-            <Route path="/search/doctors" element={<InstantConsultation />} />
+            <Route path="/instant-consultation" element={<InstantConsultation />} />
         </Routes>
       </BrowserRouter>
     </>
