@@ -1,28 +1,50 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config';
 
-function Login() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({});
+const Login = () => {
+  // State variables for email and password
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // Navigation hook from react-router-dom
+  const navigate = useNavigate();
 
-  const validate = () => {
-    const newErrors = {};
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email';
-    if (!formData.password) newErrors.password = 'Password is required';
-    return newErrors;
-  };
+  // Redirect if already logged in
+  useEffect(() => {
+    if (sessionStorage.getItem("auth-token")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
-  const handleSubmit = (e) => {
+  // Handle form submit
+  const login = async (e) => {
     e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+
+    // API call to login endpoint
+    const res = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const json = await res.json();
+
+    if (json.authtoken) {
+      // Store auth token and email
+      sessionStorage.setItem("auth-token", json.authtoken);
+      sessionStorage.setItem("email", email);
+
+      // Redirect to home and reload
+      navigate("/");
+      window.location.reload();
     } else {
-      console.log('Login successful:', formData);
+      // Show errors if login fails
+      if (json.errors) {
+        json.errors.forEach(error => alert(error.msg));
+      } else {
+        alert(json.error || "Login failed");
+      }
     }
   };
 
@@ -33,36 +55,56 @@ function Login() {
           <h2>Login</h2>
         </div>
         <div className="login-text">
-          Are you a new member? <span><a href="/signup" style={{ color: '#2190FF' }}> Sign Up Here</a></span>
+          Are you a new member?{" "}
+          <span>
+            <Link to="/signup" style={{ color: "#2190FF" }}>
+              Sign Up Here
+            </Link>
+          </span>
         </div>
         <br />
         <div className="login-form">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={login}>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" className="form-control" placeholder="Enter your email" onChange={handleChange} />
-              {errors.email && <p className="error-text">{errors.email}</p>}
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                name="email"
+                id="email"
+                className="form-control"
+                placeholder="Enter your email"
+                aria-describedby="helpId"
+                required
+              />
             </div>
-
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" id="password" className="form-control" placeholder="Enter your password" onChange={handleChange} />
-              {errors.password && <p className="error-text">{errors.password}</p>}
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
+                id="password"
+                className="form-control"
+                placeholder="Enter your password"
+                required
+              />
             </div>
-
             <div className="btn-group">
-              <button type="submit" className="btn btn-primary mb-2 mr-1 waves-effect waves-light">Login</button>
-              <button type="reset" className="btn btn-danger mb-2 waves-effect waves-light">Reset</button>
-            </div>
-            <br />
-            <div className="login-text">
-              Forgot Password?
+              <button
+                type="submit"
+                className="btn btn-primary mb-2 mr-1 waves-effect waves-light"
+              >
+                Login
+              </button>
             </div>
           </form>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
