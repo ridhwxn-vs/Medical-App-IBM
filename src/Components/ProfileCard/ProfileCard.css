@@ -1,0 +1,25 @@
+.profile-card {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 250px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 100;
+    font-family: sans-serif;
+  }
+  
+  .profile-card h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #2190FF;
+  }
+  
+  .profile-card p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  

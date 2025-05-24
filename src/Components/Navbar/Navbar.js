@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import ProfileCard from "../ProfileCard/ProfileCard";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
@@ -64,8 +65,19 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             {/* Show username before Logout */}
-            <li className="link" style={{ padding: "0 10px", fontWeight: "bold" }}>
-              Hello, {username}
+            <li
+            className="link"
+            style={{ position: "relative", padding: "0 10px", fontWeight: "bold", cursor: "pointer" }}
+            onClick={() => setShowDropdown(!showDropdown)}
+            >
+            Hello, {username} <i className="fa fa-caret-down"></i>
+            {showDropdown && (
+                <ProfileCard
+                name={sessionStorage.getItem("name") || "N/A"}
+                email={sessionStorage.getItem("email") || "N/A"}
+                phone={sessionStorage.getItem("phone") || "N/A"}
+                />
+            )}
             </li>
             <li className="link">
               <button className="btn2" onClick={handleLogout}>
